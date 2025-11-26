@@ -30,7 +30,7 @@ def run_pipeline():
     
     # Create output directory
     os.makedirs(output_dir, exist_ok=True)
-    print(f"📂 Output directory ready: {output_dir}")
+    print(f"Output directory ready: {output_dir}")
     
     # --- Process 1: Labeled Pairs (Training Data) ---
     if os.path.exists(files['labeled']):
@@ -44,9 +44,9 @@ def run_pipeline():
         # Save
         out_file = os.path.join(output_dir, 'labeled_pairs_processed.csv')
         df.to_csv(out_file, index=False)
-        print(f"✅ Saved processed labeled data: {out_file} ({len(df)} rows)")
+        print(f"Saved processed labeled data: {out_file} ({len(df)} rows)")
     else:
-        print(f"❌ Warning: File not found - {files['labeled']}")
+        print(f"Warning: File not found - {files['labeled']}")
 
     # --- Process 2: Naukri Dataset (Vocabulary/Pre-training) ---
     if os.path.exists(files['naukri']):
@@ -64,12 +64,12 @@ def run_pipeline():
             # Save only the clean text (useful for training embeddings/vocab)
             out_file = os.path.join(output_dir, 'naukri_processed.csv')
             df_naukri[['clean_text']].to_csv(out_file, index=False)
-            print(f"✅ Saved processed Naukri data: {out_file} ({len(df_naukri)} rows)")
+            print(f"Saved processed Naukri data: {out_file} ({len(df_naukri)} rows)")
             
         except Exception as e:
-            print(f"❌ Error processing Naukri data: {e}")
+            print(f"Error processing Naukri data: {e}")
     else:
-        print(f"❌ Warning: File not found - {files['naukri']}")
+        print(f"Warning: File not found - {files['naukri']}")
 
 if __name__ == "__main__":
     run_pipeline()
