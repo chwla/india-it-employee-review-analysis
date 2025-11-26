@@ -1,37 +1,42 @@
-Virtual Environment
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
 
+# Virtual Environments
 venv/
 env/
-.env
+ENV/
+.venv
 
-Python Bytecode and Cache
-
-pycache/
-*.pyc
-*.pyo
-*.pyd
-
-Data files (Exclude large datasets and generated samples)
-
-data/
-
-If you want to keep the raw data structure but ignore files, use:
-
-data/*
-
-!data/.gitkeep
-
-Generated Results and Logs
-
+# Project Generated Files
+data/processed/
+data/samples/
+models/
 results/
-logs/
-*.log
+*.h5
+*.keras
+*.pickle
 
-System files
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
 
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-*
+
+# OS
 .DS_Store
 Thumbs.db
+*.log
 
-Jupyter Notebook checkpoints (if you use notebooks later)
-
-.ipynb_checkpoints/
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
