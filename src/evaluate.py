@@ -131,7 +131,7 @@ def plot_comparison(df):
     
     plt.tight_layout()
     plt.savefig('results/model_comparison_plot.png', dpi=150, bbox_inches='tight')
-    print("📊 Visualization saved to results/model_comparison_plot.png")
+    print("Visualization saved to results/model_comparison_plot.png")
 
 def plot_confusion_matrices(df):
     """Plot confusion matrices for both models"""
@@ -170,10 +170,10 @@ def plot_confusion_matrices(df):
     
     plt.tight_layout()
     plt.savefig('results/confusion_matrices.png', dpi=150, bbox_inches='tight')
-    print("📊 Confusion matrices saved to results/confusion_matrices.png")
+    print("Confusion matrices saved to results/confusion_matrices.png")
 
 def run_evaluation():
-    print("📊 Starting Comprehensive Model Evaluation...\n")
+    print("Starting Comprehensive Model Evaluation...\n")
     
     df = load_predictions()
     if df is None:
@@ -198,7 +198,7 @@ def run_evaluation():
     base_auc = metrics_base['AUC']
     auc_diff = lstm_auc - base_auc
     
-    print("\n📈 Performance Analysis:")
+    print("\nPerformance Analysis:")
     if auc_diff > 0.05:
         print(f"   LSTM significantly outperforms baseline (+{auc_diff:.4f} AUC)")
     elif auc_diff > 0:
