@@ -125,21 +125,21 @@ def generate_realistic_resume(jd_text, match_ratio=0.7):
     return resume
 
 def build_real_dataset():
-    print(f"📄 Loading real data from {INPUT_FILE}...")
+    print(f"Loading real data from {INPUT_FILE}...")
     try:
         df_raw = pd.read_csv(INPUT_FILE)
     except FileNotFoundError:
-        print("❌ Error: Naukri CSV not found. Please check the data folder.")
+        print("Error: Naukri CSV not found. Please check the data folder.")
         return
 
     df_raw['text_content'] = df_raw['Job_Role'].fillna('') + " " + df_raw['Skills/Description'].fillna('')
     df_raw['clean_text'] = df_raw['text_content'].apply(clean_text)
     
     df = df_raw[df_raw['clean_text'].str.len() > 20].copy()
-    print(f"✅ Loaded {len(df)} valid job descriptions.")
+    print(f"Loaded {len(df)} valid job descriptions.")
     
     # --- 1. Generate POSITIVE Matches (High similarity but NOT exact copies) ---
-    print("🛠 Generating Realistic Positive Samples...")
+    print("Generating Realistic Positive Samples...")
     
     positives = []
     for _ in range(SAMPLES_TO_GENERATE // 2):
@@ -157,7 +157,7 @@ def build_real_dataset():
     df_pos = pd.DataFrame(positives)
     
     # --- 2. Generate NEGATIVE Matches (Hard Negatives) ---
-    print("🛠 Generating Hard Negative Samples...")
+    print("Generating Hard Negative Samples...")
     
     negatives = []
     
@@ -212,7 +212,7 @@ def build_real_dataset():
     df_final.to_csv(OUTPUT_FILE, index=False)
     
     print("\n" + "="*50)
-    print(f"🎉 DATASET CREATED: {OUTPUT_FILE}")
+    print(f"DATASET CREATED: {OUTPUT_FILE}")
     print(f"Total Rows: {len(df_final)}")
     print(f"Good Matches: {len(df_final[df_final['label']=='good_match'])}")
     print(f"Poor Matches: {len(df_final[df_final['label']=='poor_match'])}")
