@@ -11,7 +11,7 @@ def run_baseline():
     
     print("📄 Loading data...")
     if not os.path.exists(labeled_path):
-        print(f"❌ Error: {labeled_path} not found. Run build_dataset.py first.")
+        print(f"Error: {labeled_path} not found. Run build_dataset.py first.")
         return
 
     df_labeled = pd.read_csv(labeled_path)
@@ -23,7 +23,7 @@ def run_baseline():
     df_naukri['clean_text'] = df_naukri['clean_text'].fillna('')
 
     # --- Vectorization ---
-    print("📚 Training TF-IDF vectorizer on industry corpus...")
+    print("Training TF-IDF vectorizer on industry corpus...")
     vectorizer = TfidfVectorizer(
         max_features=5000,
         stop_words='english',
@@ -32,7 +32,7 @@ def run_baseline():
     )
     vectorizer.fit(df_naukri['clean_text'])
     
-    print(f"🔢 Transforming {len(df_labeled)} pairs...")
+    print(f"Transforming {len(df_labeled)} pairs...")
     tfidf_resumes = vectorizer.transform(df_labeled['clean_resume'])
     tfidf_jds = vectorizer.transform(df_labeled['clean_jd'])
     
@@ -62,16 +62,16 @@ def run_baseline():
     # ROC-AUC
     try:
         auc = roc_auc_score(df_labeled['target'], df_labeled['tfidf_similarity'])
-        print(f"\n📊 ROC-AUC Score: {auc:.4f}")
+        print(f"\nROC-AUC Score: {auc:.4f}")
     except ValueError as e:
-        print(f"⚠️ ROC-AUC calculation failed: {e}")
+        print(f"ROC-AUC calculation failed: {e}")
         auc = None
 
     # Dynamic threshold (optimal separation point)
     threshold = (avg_good + avg_poor) / 2
     predictions = (df_labeled['tfidf_similarity'] >= threshold).astype(int)
     
-    print(f"\n🎯 Classification Results (Threshold = {threshold:.4f}):")
+    print(f"\nClassification Results (Threshold = {threshold:.4f}):")
     print("\nConfusion Matrix:")
     cm = confusion_matrix(df_labeled['target'], predictions)
     print(cm)
@@ -88,7 +88,7 @@ def run_baseline():
     os.makedirs('results', exist_ok=True)
     out_file = 'results/baseline_predictions.csv'
     df_labeled.to_csv(out_file, index=False)
-    print(f"\n✅ Predictions saved to {out_file}")
+    print(f"\nPredictions saved to {out_file}")
     
     # Save threshold for dashboard
     with open('models/tfidf_threshold.txt', 'w') as f:
