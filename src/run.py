@@ -22,10 +22,10 @@ def run_command(cmd, description):
             text=True,
             capture_output=False
         )
-        print(f"✅ {description} - COMPLETED")
+        print(f"{description} - COMPLETED")
         return True
     except subprocess.CalledProcessError as e:
-        print(f"❌ {description} - FAILED")
+        print(f"{description} - FAILED")
         print(f"Error: {e}")
         return False
 
@@ -34,7 +34,7 @@ def check_data_exists():
     data_file = 'data/naukri_data_science_jobs_india.csv'
     if not os.path.exists(data_file):
         print("\n" + "="*70)
-        print("❌ ERROR: Data file not found!")
+        print("ERROR: Data file not found!")
         print("="*70)
         print(f"Required file: {data_file}")
         print("\nPlease ensure the Naukri dataset is in the data/ directory.")
@@ -81,20 +81,20 @@ def main():
     for cmd, description in steps:
         success = run_command(cmd, description)
         if not success:
-            print("\n❌ Pipeline failed. Please fix the error and retry.")
+            print("\nPipeline failed. Please fix the error and retry.")
             sys.exit(1)
     
     # Success message
     print("\n" + "="*70)
-    print("🎉 PIPELINE COMPLETED SUCCESSFULLY!")
+    print("PIPELINE COMPLETED SUCCESSFULLY!")
     print("="*70)
-    print("\n📊 Results available in:")
+    print("\nResults available in:")
     print("   - results/baseline_predictions.csv")
     print("   - results/lstm_predictions.csv")
     print("   - results/model_metrics.csv")
     print("   - results/model_comparison_plot.png")
     print("   - results/confusion_matrices.png")
-    print("\n🚀 To launch the interactive dashboard, run:")
+    print("\nTo launch the interactive dashboard, run:")
     print("   streamlit run src/dashboard.py")
     print("="*70)
 
