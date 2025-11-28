@@ -9,7 +9,7 @@ def run_baseline():
     labeled_path = 'data/processed/train_data_large.csv'
     naukri_path = 'data/processed/naukri_processed.csv'
     
-    print("📄 Loading data...")
+    print("Loading data...")
     if not os.path.exists(labeled_path):
         print(f"Error: {labeled_path} not found. Run build_dataset.py first.")
         return
