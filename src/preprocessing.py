@@ -26,11 +26,11 @@ def run_pipeline():
     output_dir = 'data/processed'
     
     os.makedirs(output_dir, exist_ok=True)
-    print(f"📂 Output directory ready: {output_dir}")
+    print(f"Output directory ready: {output_dir}")
     
     # --- Process Naukri Dataset ---
     if os.path.exists(raw_naukri):
-        print(f"\n📊 Processing Naukri Data: {raw_naukri}...")
+        print(f"\nProcessing Naukri Data: {raw_naukri}...")
         try:
             df_naukri = pd.read_csv(raw_naukri)
             
@@ -50,18 +50,18 @@ def run_pipeline():
             out_file = os.path.join(output_dir, 'naukri_processed.csv')
             df_naukri[['clean_text']].to_csv(out_file, index=False)
             
-            print(f"✅ Saved: {out_file}")
+            print(f"Saved: {out_file}")
             print(f"   Rows: {len(df_naukri)}")
             print(f"   Avg length: {df_naukri['clean_text'].str.len().mean():.0f} chars")
             
         except Exception as e:
-            print(f"❌ Error processing Naukri data: {e}")
+            print(f"Error processing Naukri data: {e}")
     else:
-        print(f"❌ Warning: File not found - {raw_naukri}")
+        print(f"Warning: File not found - {raw_naukri}")
         print("   Please ensure the Naukri dataset is in the data/ folder")
     
     print("\n" + "="*50)
-    print("✅ Preprocessing Complete!")
+    print("Preprocessing Complete!")
     print("="*50)
     print("\nNext steps:")
     print("  1. Run: python build_dataset.py")
