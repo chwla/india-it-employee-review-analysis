@@ -11,7 +11,7 @@ def load_predictions():
     lstm_path = 'results/lstm_predictions.csv'
     
     if not os.path.exists(base_path) or not os.path.exists(lstm_path):
-        print("❌ Error: Missing prediction files.")
+        print("Error: Missing prediction files.")
         print("   Run: python baseline_tfidf.py && python train_lstm.py")
         return None
 
@@ -200,23 +200,23 @@ def run_evaluation():
     
     print("\n📈 Performance Analysis:")
     if auc_diff > 0.05:
-        print(f"   ✅ LSTM significantly outperforms baseline (+{auc_diff:.4f} AUC)")
+        print(f"   LSTM significantly outperforms baseline (+{auc_diff:.4f} AUC)")
     elif auc_diff > 0:
-        print(f"   ✓ LSTM marginally better (+{auc_diff:.4f} AUC)")
+        print(f"   LSTM marginally better (+{auc_diff:.4f} AUC)")
     elif auc_diff > -0.05:
-        print(f"   ≈ Models perform similarly ({auc_diff:+.4f} AUC)")
+        print(f"   Models perform similarly ({auc_diff:+.4f} AUC)")
     else:
-        print(f"   ⚠️ Baseline outperforms LSTM ({auc_diff:+.4f} AUC)")
+        print(f"   Baseline outperforms LSTM ({auc_diff:+.4f} AUC)")
         print("   This suggests dataset quality issues or insufficient training data")
     
     # Generate visualizations
-    print("\n📊 Generating visualizations...")
+    print("\nGenerating visualizations...")
     plot_comparison(df)
     plot_confusion_matrices(df)
     
     # Save detailed results
     results_df.to_csv('results/model_metrics.csv', index=False)
-    print("\n✅ Detailed metrics saved to results/model_metrics.csv")
+    print("\nDetailed metrics saved to results/model_metrics.csv")
     
     print("\n" + "="*70)
     print("Evaluation complete! Check the results folder for visualizations.")
