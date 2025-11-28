@@ -19,7 +19,7 @@ EPOCHS = 25
 BATCH_SIZE = 32
 
 def run_training():
-    print("🚀 Starting Enhanced LSTM Training...")
+    print("Starting Enhanced LSTM Training...")
     
     labeled_path = 'data/processed/train_data_large.csv'
     naukri_path = 'data/processed/naukri_processed.csv'
@@ -28,7 +28,7 @@ def run_training():
     df_naukri = pd.read_csv(naukri_path).fillna("")
     
     # --- Tokenizer ---
-    print("📚 Building vocabulary from industry corpus...")
+    print("Building vocabulary from industry corpus...")
     tokenizer = Tokenizer(num_words=MAX_VOCAB_SIZE, oov_token="<OOV>")
     tokenizer.fit_on_texts(df_naukri['clean_text'])
     
@@ -40,7 +40,7 @@ def run_training():
         pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
         
     # --- Sequences ---
-    print(f"🔢 Converting {len(df_labeled)} pairs to sequences...")
+    print(f"Converting {len(df_labeled)} pairs to sequences...")
     resume_seqs = tokenizer.texts_to_sequences(df_labeled['clean_resume'])
     resume_padded = pad_sequences(resume_seqs, maxlen=MAX_SEQ_LENGTH, padding='post', truncating='post')
     
@@ -50,7 +50,7 @@ def run_training():
     labels = df_labeled['label'].apply(lambda x: 1.0 if x == 'good_match' else 0.0).values
     
     # --- Enhanced Model Architecture ---
-    print("🏗️ Building Enhanced Siamese Network...")
+    print("Building Enhanced Siamese Network...")
     
     # Shared layers (removed mask_zero to avoid loading issues)
     shared_embedding = Embedding(
@@ -99,7 +99,7 @@ def run_training():
         metrics=['accuracy', tf.keras.metrics.AUC(name='auc')]
     )
     
-    print("\n📊 Model Summary:")
+    print("\nModel Summary:")
     model.summary()
     
     # --- Callbacks ---
@@ -119,7 +119,7 @@ def run_training():
     )
     
     # --- Training ---
-    print("\n🏋️ Training Model...")
+    print("\nTraining Model...")
     history = model.fit(
         [resume_padded, jd_padded], 
         labels,
@@ -132,28 +132,28 @@ def run_training():
     
     # Save in new Keras format (better compatibility)
     model.save('models/lstm_model.keras')
-    print("✅ Model saved to models/lstm_model.keras")
+    print("Model saved to models/lstm_model.keras")
     
     # Also save as .h5 for backwards compatibility
     try:
         model.save('models/lstm_model.h5')
-        print("✅ Model also saved to models/lstm_model.h5")
+        print("Model also saved to models/lstm_model.h5")
     except:
-        print("⚠️ Could not save .h5 format (not critical)")
+        print("Could not save .h5 format (not critical)")
     
     # Save training history
     history_df = pd.DataFrame(history.history)
     history_df.to_csv('models/training_history.csv', index=False)
-    print("✅ Training history saved to models/training_history.csv")
+    print("Training history saved to models/training_history.csv")
     
     # --- Predictions ---
-    print("\n🔮 Generating predictions...")
+    print("\nGenerating predictions...")
     predictions = model.predict([resume_padded, jd_padded], verbose=0)
     df_labeled['lstm_score'] = predictions.flatten()
     
     os.makedirs('results', exist_ok=True)
     df_labeled.to_csv('results/lstm_predictions.csv', index=False)
-    print("✅ Predictions saved to results/lstm_predictions.csv")
+    print("Predictions saved to results/lstm_predictions.csv")
     
     # --- Quick Evaluation ---
     from sklearn.metrics import roc_auc_score, classification_report
