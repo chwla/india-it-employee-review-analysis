@@ -22,7 +22,7 @@ def clean_text(text):
 @st.cache_resource
 def load_resources():
     status = st.empty()
-    status.text("⏳ Loading AI models...")
+    status.text("Loading AI models...")
     
     errors = []
     
@@ -84,7 +84,7 @@ def load_resources():
     status.empty()
     
     if errors:
-        st.sidebar.warning("⚠️ Some models failed to load:\n\n" + "\n\n".join(errors))
+        st.sidebar.warning("Some models failed to load:\n\n" + "\n\n".join(errors))
     
     return tfidf, tfidf_threshold, lstm_model, tokenizer
 
@@ -121,7 +121,7 @@ def get_interpretation(score, model_name):
             return "🔴 Poor Match", "Weak semantic relationship detected."
 
 def main():
-    st.title("🎯 ATS Resume Matcher AI")
+    st.title("ATS Resume Matcher AI")
     st.markdown("### Analyze Resume-Job Match using Dual AI Models")
     st.markdown("---")
     
@@ -129,7 +129,7 @@ def main():
     tfidf_vectorizer, tfidf_threshold, lstm_model, tokenizer = load_resources()
     
     if not tfidf_vectorizer and not lstm_model:
-        st.error("❌ No models available. Please run the training pipeline first.")
+        st.error("No models available. Please run the training pipeline first.")
         st.code("""
 # Run these commands in order:
 python src/preprocessing.py
@@ -141,16 +141,16 @@ python src/train_lstm.py
 
     # Sidebar with info
     with st.sidebar:
-        st.header("ℹ️ About")
+        st.header("About")
         st.markdown("""
         This tool uses two AI approaches:
         
-        **1. TF-IDF Baseline** 🔤
+        **1. TF-IDF Baseline** 
         - Keyword-based matching
         - Fast and interpretable
         - Mimics traditional ATS systems
         
-        **2. LSTM Siamese Network** 🧠
+        **2. LSTM Siamese Network** 
         - Deep learning approach
         - Captures semantic meaning
         - Understands context beyond keywords
@@ -166,14 +166,14 @@ python src/train_lstm.py
         # Model status
         st.subheader("Model Status")
         if tfidf_vectorizer:
-            st.success("✅ TF-IDF Model loaded")
+            st.success("TF-IDF Model loaded")
         else:
-            st.error("❌ TF-IDF Model unavailable")
+            st.error("TF-IDF Model unavailable")
             
         if lstm_model:
-            st.success("✅ LSTM Model loaded")
+            st.success("LSTM Model loaded")
         else:
-            st.error("❌ LSTM Model unavailable")
+            st.error("LSTM Model unavailable")
         
         st.markdown("---")
         st.caption("Built with TensorFlow, scikit-learn, and Streamlit")
@@ -182,7 +182,7 @@ python src/train_lstm.py
     col1, col2 = st.columns(2)
     
     with col1:
-        st.subheader("📄 Resume")
+        st.subheader("Resume")
         resume_text = st.text_area(
             "Paste Resume Text",
             height=350,
@@ -191,7 +191,7 @@ python src/train_lstm.py
         )
         
     with col2:
-        st.subheader("📋 Job Description")
+        st.subheader("Job Description")
         jd_text = st.text_area(
             "Paste Job Description",
             height=350,
@@ -206,16 +206,16 @@ python src/train_lstm.py
 
     if analyze_btn:
         if not resume_text.strip() or not jd_text.strip():
-            st.warning("⚠️ Please provide both resume and job description.")
+            st.warning("Please provide both resume and job description.")
             return
             
-        with st.spinner("🔄 Analyzing match..."):
+        with st.spinner("Analyzing match..."):
             # Preprocess
             clean_resume = clean_text(resume_text)
             clean_jd = clean_text(jd_text)
             
             if len(clean_resume) < 20 or len(clean_jd) < 20:
-                st.error("❌ Text too short. Please provide more content.")
+                st.error("Text too short. Please provide more content.")
                 return
             
             results = {}
@@ -248,7 +248,7 @@ python src/train_lstm.py
 
         # --- Display Results ---
         st.markdown("---")
-        st.header("📊 Match Analysis Results")
+        st.header("Match Analysis Results")
         
         if 'tfidf_score' in results or 'lstm_score' in results:
             # Metric cards
@@ -257,7 +257,7 @@ python src/train_lstm.py
             if 'tfidf_score' in results:
                 with metric_cols[0]:
                     st.metric(
-                        label="🔤 TF-IDF Match Score",
+                        label="TF-IDF Match Score",
                         value=f"{results['tfidf_score']}%",
                         help="Keyword-based similarity score"
                     )
@@ -268,7 +268,7 @@ python src/train_lstm.py
             if 'lstm_score' in results:
                 with metric_cols[1]:
                     st.metric(
-                        label="🧠 LSTM Match Score",
+                        label="LSTM Match Score",
                         value=f"{results['lstm_score']}%",
                         help="Semantic similarity score"
                     )
@@ -278,40 +278,40 @@ python src/train_lstm.py
             
             # Skill overlap analysis
             st.markdown("---")
-            st.subheader("🎯 Key Skill Overlap")
+            st.subheader("Key Skill Overlap")
             skills = get_skill_overlap(resume_text, jd_text)
             
             if skills:
                 skill_cols = st.columns(5)
                 for idx, skill in enumerate(skills):
                     with skill_cols[idx % 5]:
-                        st.markdown(f"✓ `{skill}`")
+                        st.markdown(f" `{skill}`")
             else:
                 st.info("No common technical terms detected. This may indicate a poor match.")
             
             # Recommendations
             st.markdown("---")
-            st.subheader("💡 Recommendations")
+            st.subheader("Recommendations")
             
             avg_score = np.mean([results.get('tfidf_raw', 0), results.get('lstm_raw', 0)])
             
             if avg_score > 0.65:
                 st.success("""
-                ✅ **Strong Match Detected**
+                **Strong Match Detected**
                 - Your resume aligns well with the job requirements
                 - Consider highlighting specific achievements that match the JD
                 - You have a good chance of passing ATS screening
                 """)
             elif avg_score > 0.4:
                 st.warning("""
-                ⚠️ **Moderate Match - Optimization Needed**
+                **Moderate Match - Optimization Needed**
                 - Add more keywords from the job description
                 - Rephrase experiences to match JD terminology
                 - Highlight relevant projects and technologies
                 """)
             else:
                 st.error("""
-                ❌ **Weak Match - Major Changes Required**
+                **Weak Match - Major Changes Required**
                 - Significant skill gap detected
                 - Consider if this role truly matches your profile
                 - If applying, heavily customize your resume for this position
