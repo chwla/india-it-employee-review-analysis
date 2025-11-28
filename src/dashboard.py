@@ -10,7 +10,7 @@ import pickle
 import re
 import os
 
-st.set_page_config(page_title="ATS Resume Matcher", page_icon="🎯", layout="wide")
+st.set_page_config(page_title="ATS Resume Matcher", page_icon="A", layout="wide")
 
 def clean_text(text):
     if not isinstance(text, str): return ""
@@ -103,22 +103,22 @@ def get_interpretation(score, model_name):
     """Provide human-readable interpretation"""
     if model_name == "TF-IDF":
         if score > 0.7:
-            return "🟢 Strong Match", "Keywords align exceptionally well. High probability of ATS clearance."
+            return "Strong Match", "Keywords align exceptionally well. High probability of ATS clearance."
         elif score > 0.5:
-            return "🟡 Moderate Match", "Decent keyword overlap. Consider adding more relevant skills."
+            return "Moderate Match", "Decent keyword overlap. Consider adding more relevant skills."
         elif score > 0.3:
-            return "🟠 Weak Match", "Limited overlap detected. Resume needs significant optimization."
+            return "Weak Match", "Limited overlap detected. Resume needs significant optimization."
         else:
-            return "🔴 Poor Match", "Very low keyword alignment. Major mismatch with job requirements."
+            return "Poor Match", "Very low keyword alignment. Major mismatch with job requirements."
     else:  # LSTM
         if score > 0.7:
-            return "🟢 Strong Semantic Match", "Deep learning model detects strong contextual alignment."
+            return "Strong Semantic Match", "Deep learning model detects strong contextual alignment."
         elif score > 0.5:
-            return "🟡 Moderate Match", "Some semantic similarity detected."
+            return "Moderate Match", "Some semantic similarity detected."
         elif score > 0.3:
-            return "🟠 Weak Match", "Limited semantic alignment."
+            return "Weak Match", "Limited semantic alignment."
         else:
-            return "🔴 Poor Match", "Weak semantic relationship detected."
+            return "Poor Match", "Weak semantic relationship detected."
 
 def main():
     st.title("ATS Resume Matcher AI")
