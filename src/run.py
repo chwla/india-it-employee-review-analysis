@@ -11,7 +11,7 @@ import os
 def run_command(cmd, description):
     """Run a command and handle errors"""
     print("\n" + "="*70)
-    print(f"🚀 {description}")
+    print(f"{description}")
     print("="*70)
     
     try:
